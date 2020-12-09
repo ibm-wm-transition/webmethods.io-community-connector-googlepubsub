@@ -1,0 +1,116 @@
+
+apply plugin: 'application'
+apply plugin: 'distribution'
+apply plugin: 'jcreatenodendf'
+apply plugin: 'maven-publish'
+
+buildscript { ext {
+bas = [
+version : 'v1.0.1-005',
+] }
+dependencies { classpath(
+"com.softwareag.connector:plugin:v1.0.1-005")
+repositories {
+    println 'Plugin repo Code'
+
+    // Use JCenter for resolving dependencies.
+    mavenCentral()
+    maven{
+        url "${project.buildDependencyURL}/${project.buildDependencyOrganization}/${project.buildDependencyRepoName}"
+        credentials {
+            username = project.buildDependencyOrganization//"${project.property('github.organization')}"//project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+            password = project.buildDependencyToken//secretsProperties['GH_SEC_TOKEN']//"e8a7800a8044f4386447b946073e4325435efe7d"//project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+        }
+      }
+    }
+  }
+}
+
+repositories {
+
+    mavenCentral()
+    maven{
+        url "${project.buildDependencyURL}/${project.buildDependencyOrganization}/${project.buildDependencyRepoName}"
+        credentials {
+            username = project.buildDependencyOrganization//"${project.property('github.organization')}"//project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+            password = project.buildDependencyToken//secretsProperties['GH_SEC_TOKEN']//"e8a7800a8044f4386447b946073e4325435efe7d"//project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['code/source']
+        }
+        resources {
+            srcDirs = ['resources']
+        }
+
+    }
+
+}
+dependencies {
+    println 'dependency Code'
+    // Use JUnit test framework.
+    //testImplementation 'junit:junit:4.13'
+		//compileOnly 'org.apache.commons:commons-collections4:4.4'
+
+		//compileOnly 'com.softwareag.cloudstreams:cloudstreams-is:10.5.0'
+		//compileOnly 'com.softwareag.cloudstreams:cloudstreams-connector:10.5.0.2'
+		compileOnly 'com.softwareag.cloudstreams:cs-connector:10.5.0.3'//6 errors when removed
+		//compileOnly 'com.softwareag.cloudstreams:cloudstreams-client-common:10.5.1'
+		//compileOnly 'com.softwareag.is:wm-isproxy:10.5.0'
+		//compileOnly 'com.softwareag.is:wm-is-osgi-profile:10.5.0'
+		//compileOnly 'com.softwareag.cloudstreams:cloudstreams-core:10.5.0'//com.softwareag.cloudstreams
+		//compileOnly 'com.softwareag.cloudstreams:cloudstreams-upgrade:10.5.0'
+		//compileOnly 'com.softwareag.cloudstreams:cloudstreams-connector-tooling-api:10.5.0'
+		//compileOnly 'com.softwareag.cloudstreams:cloudstreams-connector-tooling-api-impl:10.5.0'
+		//compileOnly 'com.softwareag.cloudstreams:cloudstreams-cdk:10.5.0'
+		//compileOnly 'com.softwareag.cloudstreams:cs-cdk:10.5.0.2'
+		compileOnly 'com.softwareag.cloudstreams:cs-client-common:10.5.0.2'//more than 100errors when removed
+		//compileOnly 'com.softwareag.cloudstreams:cs-connector-tooling-api-impl:10.5.0.2'
+		//compileOnly 'com.softwareag.cloudstreams:cs-connector-tooling-api:10.5.0.2'
+		//compileOnly 'com.softwareag.cloudstreams:cs-connfactory:10.5.0.2'
+		//compileOnly 'com.softwareag.cloudstreams:cs-core:10.5.0.2'
+		//compileOnly 'com.softwareag.cloudstreams:cloudstreams-connfactory:10.5.0'
+		//compileOnly 'com.softwareag.cloudstreams:cloudstreams-bundle:10.5.0'
+		//compileOnly 'com.softwareag.cloudstreams:cloudstreams-metadata-handler:10.5.0'
+		compileOnly 'com.softwareag.cloudstreams.ext:cs-shared-ext:10.5.0.3'//more than 100 errors when removed
+		compileOnly 'com.softwareag.isclient:is-client:10.5.0'//more than 100 errors when removed
+		compileOnly 'com.softwareag.isserver:wm-isserver:10.5.0'//more than 100 errors when removed
+}
+
+task assembleArtifact(type: Zip, group: 'wm') {
+    archiveName "${project.providerExtPackageName}.zip"
+    destinationDir file("${rootDir}/build/tmpzip")//    ("${buildDir}/libs/")
+
+    from "${rootDir}/packages/${project.providerExtPackageName}/build/ISTemp" //,code,connectors,config,resources"
+
+    description "Assemble archive"
+    exclude "build"
+    exclude "libs"
+
+}
+
+
+task copyJavaClass(type: Copy) {
+  from "${rootDir}/packages/${project.providerExtPackageName}/build/classes/java/main"
+  into "${rootDir}/packages/${project.providerExtPackageName}/code/classes"
+}
+task copyAllFilesToISTemp(type: Copy){
+  from "${rootDir}/packages/${project.providerExtPackageName}/"//"${project.rootDir}"
+  into "${rootDir}/packages/${project.providerExtPackageName}/build/ISTemp"
+  exclude '.settings', 'bin', 'build/**', '**/*.gradle', '**/*.classpath', '**/*.project', '**/*.java', '**/*.frag', '**/*.bak', 'code/source', 'code/jars/cloudstreams-connector-utils.jar', '.externalToolBuilders', 'classes'
+
+}
+task deleteFragFiles(type: Delete) {
+    delete fileTree("${project.rootDir}") {
+        include '**/*.asd'
+    }
+}
+
+jCreateNodeNdf.dependsOn compileJava
+  copyJavaClass.dependsOn jCreateNodeNdf
+copyAllFilesToISTemp.dependsOn copyJavaClass
+assembleArtifact.dependsOn copyAllFilesToISTemp

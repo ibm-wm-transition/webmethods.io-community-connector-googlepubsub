@@ -1,0 +1,8 @@
+/* Need to register my string converters at the very beginning */
+rootProject.name = 'connector-template'
+
+
+include ':WmTemplateProvider',':WmTemplateProviderExt'
+
+project(":WmTemplateProvider").projectDir = new File(rootDir, 'packages/WmTemplateProvider')
+project(":WmTemplateProviderExt").projectDir = new File(rootDir, 'packages/WmTemplateProviderExt')

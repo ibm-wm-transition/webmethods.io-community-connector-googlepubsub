@@ -1,0 +1,13 @@
+pluginManagement {
+    repositories {
+
+        maven {
+            url "${project.buildDependencyURL}/${project.buildDependencyOrganization}/${project.buildDependencyRepoName}"
+            credentials {
+                username = project.buildDependencyOrganization//"${project.property('github.organization')}"//project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+                password = project.buildDependencyToken//secretsProperties['GH_SEC_TOKEN']//"e8a25435efe7d"//project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+        gradlePluginPortal()
+    }
+}

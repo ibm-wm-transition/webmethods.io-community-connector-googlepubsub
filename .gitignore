@@ -1,0 +1,4 @@
+**/build
+**/secrets.properties
+**/.gradle
+**/.idea
