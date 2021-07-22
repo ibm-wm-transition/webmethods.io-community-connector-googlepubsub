@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Values version="2.0">
+  <value name="name">DemoGooglePubSubProvider</value>
+  <value name="publisher">prsa</value>
+  <value name="enabled">yes</value>
+  <value name="system_package">yes</value>
+  <value name="version">10.5.0</value>
+  <record name="startup_services" javaclass="com.wm.util.Values">
+    <null name="wm.cloudstreams.DemoGooglePubSubProvider:registerProvider"/>
+  </record>
+  <record name="shutdown_services" javaclass="com.wm.util.Values">
+    <null name="wm.cloudstreams.DemoGooglePubSubProvider:unregisterProvider"/>
+  </record>
+  <null name="replication_services"/>
+  <record name="requires" javaclass="com.wm.util.Values">
+    <value name="WmCloudStreams">10.5.0</value>
+  </record>
+  <null name="listACL"/>
+  <value name="webappLoad">yes</value>
+</Values>

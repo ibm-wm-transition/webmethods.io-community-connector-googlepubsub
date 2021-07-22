@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rest-connector xmlns="http://www.softwareag.com/cloudstreams/metadata/handler/model" id="com.softwareag.cloudstreams.google.pubsub_v1" version="1.0" group="Google" name="GoogleCloudPubSub" displayName="Google Cloud PubSub">
+    <connections>
+        <connection type="sagcloud" name="SAG_Connection" displayName="SAG_Connection">
+            <groups>
+                <group type="connection" name="connection" displayName="Connection">
+                    <description>Define the required connection configurations to initiate communication with the SaaS provider.</description>
+                    <fields>
+                        <field isRequired="true" isEncrypted="false" isHidden="false" isArray="false" defaultValue="https://pubsub.googleapis.com" name="cn.providerUrl" displayName="Server URL">
+                            <description>The native provider endpoint target for the connection configuration</description>
+                        </field>
+                    </fields>
+                </group>
+                <group type="oauth_v20" name="oauth_v20" displayName="OAuth V2.0">
+                    <description>Define configurations needed for the OAuth version 2.0 authentication scheme.</description>
+                    <fields/>
+                </group>
+            </groups>
+        </connection>
+    </connections>
+    <services>
+        <service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="RESTServiceType" endpoint="${cn.providerUrl}" name="topics" displayName="topics">
+            <documentModel packageName="." nsName="com.softwareag.cloudstreams.google.pubsub_v1.topics.doctypes" useInlineModel="true"/>
+            <resources>
+                <lookups/>
+                <mappings/>
+                <resource method="GET" path="/v1/projects/{projectId}/topics/{topicName}" type="SIMPLE" name="gettopics" displayName="topics">
+                    <description>Gets the configuration of a topic.</description>
+                    <mappings/>
+                    <parameters>
+                        <parameter name="projectId" isRequired="true" style="URI_CONTEXT"/>
+                        <parameter name="topicName" isRequired="true" style="URI_CONTEXT"/>
+                    </parameters>
+                    <responses>
+                        <response name="topics" code="200" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="com.softwareag.cloudstreams.google.pubsub_v1.topics.doctypes:topic" dimension="0"/>
+                        <response name="errorResponse" code="400-500" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="com.softwareag.cloudstreams.google.pubsub_v1.topics.doctypes:errorResponse" dimension="0"/>
+                    </responses>
+                </resource>
+                <resource method="POST" path="/v1/projects/{projectId}/topics/{topicName}:setIamPolicy" type="SIMPLE" name="postsetIamPolicy" displayName="setIamPolicy">
+                    <description>Sets the access control policy on the specified resource. Replaces any existing policy.</description>
+                    <mappings>
+                        <map isRequired="true" context="IN" name="Content-Type">
+                            <source type="LITERAL">application/json</source>
+                            <target type="HEADER">Content-Type</target>
+                        </map>
+                    </mappings>
+                    <parameters>
+                        <parameter name="projectId" isRequired="true" style="URI_CONTEXT"/>
+                        <parameter name="topicName" isRequired="true" style="URI_CONTEXT"/>
+                    </parameters>
+                    <request name="setIamPolicyRequest" messageFormatterType="application/json" builderType="application/octet+idataoref" documentRef="com.softwareag.cloudstreams.google.pubsub_v1.topics.doctypes:setIamPolicyRequest" dimension="0"/>
+                    <responses>
+                        <response name="setIamPolicyResponse" code="200" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="com.softwareag.cloudstreams.google.pubsub_v1.topics.doctypes:setIamPolicyResponse" dimension="0"/>
+                        <response name="errorResponse" code="400-500" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="com.softwareag.cloudstreams.google.pubsub_v1.topics.doctypes:errorResponse" dimension="0"/>
+                    </responses>
+                </resource>
+                <resource method="DELETE" path="/v1/projects/{projectId}/topics/{topicName}" type="SIMPLE" name="deletetopics" displayName="topics">
+                    <description>Deletes the topic with the given name.</description>
+                    <mappings/>
+                    <parameters>
+                        <parameter name="projectId" isRequired="true" style="URI_CONTEXT"/>
+                        <parameter name="topicName" isRequired="true" style="URI_CONTEXT"/>
+                    </parameters>
+                    <request name="stream" messageFormatterType="vnd.sag.cloudstreams+binary" builderType="vnd.sag.cloudstreams+binary" dimension="0"/>
+                    <responses>
+                        <response name="empty" code="200" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="com.softwareag.cloudstreams.google.pubsub_v1.topics.doctypes:empty" dimension="0"/>
+                        <response name="errorResponse" code="400-500" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="com.softwareag.cloudstreams.google.pubsub_v1.topics.doctypes:errorResponse" dimension="0"/>
+                    </responses>
+                </resource>
+                <resource method="PUT" path="/v1/projects/{projectId}/topics/{topicName}" type="SIMPLE" name="puttopics" displayName="topics">
+                    <description>Creates the given topic with the given name.</description>
+                    <mappings>
+                        <map isRequired="true" context="IN" name="Content-Type">
+                            <source type="LITERAL">application/json</source>
+                            <target type="HEADER">Content-Type</target>
+                        </map>
+                    </mappings>
+                    <parameters>
+                        <parameter name="projectId" isRequired="true" style="URI_CONTEXT"/>
+                        <parameter name="topicName" isRequired="true" style="URI_CONTEXT"/>
+                    </parameters>
+                    <request name="empty" messageFormatterType="application/xml" builderType="application/octet+idataoref" documentRef="com.softwareag.cloudstreams.google.pubsub_v1.topics.doctypes:empty" dimension="0"/>
+                    <responses>
+                        <response name="topics" code="200" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="com.softwareag.cloudstreams.google.pubsub_v1.topics.doctypes:topic" dimension="0"/>
+                        <response name="errorResponse" code="400-500" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="com.softwareag.cloudstreams.google.pubsub_v1.topics.doctypes:errorResponse" dimension="0"/>
+                    </responses>
+                </resource>
+            </resources>
+        </service>
+    </services>
+</rest-connector>

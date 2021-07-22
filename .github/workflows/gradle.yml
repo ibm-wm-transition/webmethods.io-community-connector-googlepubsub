@@ -5,7 +5,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develop ]
 
 jobs:
   build:
@@ -25,6 +25,5 @@ jobs:
 
 
       run: |
-        gradle :WmTemplateProviderExt:assembleArtifact
-        gradle :WmTemplateProvider:assembleArtifact
-        gradle publish
+        ./gradlew :DemoGooglePubSubProvider:assembleArtifact
+        ./gradlew publishGprPublicationToSNAPSHOTRepository

@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Connector-Handler: com.softwareag.cloudstreams.metadata.handler.rest.R
+ estConnectorMetadataHandler
+Connector-Group: Google
+Connector-State: Enabled
+Connector-Bundle-Vendor: prsa
+Connector-Bundle-Version: 1.0
+Project: 
+Connector-Name: Google Cloud PubSub
+Connector-Key: com.softwareag.cloudstreams.google.pubsub_v1
+Connector-Version: 1.0
+
