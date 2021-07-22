@@ -1,8 +1,7 @@
 /* Need to register my string converters at the very beginning */
-rootProject.name = 'connector-template'
+rootProject.name = 'webmethods.io-community-connector-googlepubsub'
 
 
-include ':WmTemplateProvider',':WmTemplateProviderExt'
+include ':DemoGooglePubSubProvider'
 
-project(":WmTemplateProvider").projectDir = new File(rootDir, 'packages/WmTemplateProvider')
-project(":WmTemplateProviderExt").projectDir = new File(rootDir, 'packages/WmTemplateProviderExt')
+project(":DemoGooglePubSubProvider").projectDir = new File(rootDir, 'packages/DemoGooglePubSubProvider')
